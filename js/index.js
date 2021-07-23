@@ -1,8 +1,18 @@
+import "quill-mention";
+var Quill = require("quill");
+
 var isOut = false;
+var cool_values = [
+    {id: 1, value: "hi"},
+    {id: 2, value: "sup"}
+]
 
-
-mention = {
-    mentionDenotationChars: ["@"]
+var mention = {
+    mentionDenotationChars: ["@"],
+    source: function(searchTerm, renderList, mentionChar) {
+        let values = cool_values;
+        renderList(values, searchTerm);
+    }
 }
 var bindings = {
     tab: {
@@ -23,12 +33,13 @@ var bindings = {
     }
 }
 
-var quill = new Quill('#editor', {
-    theme: 'snow',
-    modules: {
-        keyboard: {
-            bindings: bindings
+$(document).ready(() =>{
+    var quill = new Quill('#editor', {
+        theme: 'snow',
+        modules: {
+            mention: mention
         }
-    }
-  });
+      });
+});
+
 
