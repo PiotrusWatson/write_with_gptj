@@ -1,15 +1,32 @@
 
-#dropdown {
-    width: 520px;
+.ql-mention-list {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    list-style-type: none;
+}
+.ql-mention-list-container{
     border: 1px solid #F0F0F0;
     border-radius: 4px;
     background-color: #FFFFFF;
     box-shadow: 0 2px 12px 0 rgba(30, 30, 30, 0.08);
-    z-index: 9001;
-    height: 100px;
-    position:absolute;
 }
 
+.ql-mention-list-item{
+    cursor: pointer;
+    padding: 0 20px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.ql-mention-list-item.selected{
+    background-color: #D3E1EB;
+}
+
+.ql-mention-list-container li{
+    list-style-type: none;
+}
 .visible {
     visibility: visible;
     pointer-events: auto;
