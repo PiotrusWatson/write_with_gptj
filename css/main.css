@@ -1,3 +1,13 @@
+body {
+    background-color:#D3E1EB; 
+}
+
+.ql-snow {
+    margin-left: 10% !important;
+    margin-right: 10% !important;
+    background-color: white;
+}
+
 
 .ql-mention-list {
     margin: 0;
