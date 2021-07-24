@@ -1,5 +1,7 @@
-body {
-    background-color:#D3E1EB; 
+html, body {
+    background-color:#D3E1EB;
+    margin: 0;
+    height: 100%;
 }
 
 .ql-snow {
@@ -28,6 +30,7 @@ body {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    font-size: 1.3em;
 }
 
 .ql-mention-list-item.selected{
