@@ -1,5 +1,5 @@
-import "core-js/stable";
-import "regenerator-runtime/runtime";
+//import "core-js/stable";
+//import "regenerator-runtime/runtime";
 import "quill-mention";
 const p = require('phin');
 var Quill = require("quill");
@@ -12,7 +12,7 @@ var isOpen = false;
 var mention = {
     //assumption: bell won't be generated randomly by a textbot
     mentionDenotationChars: ['\u0007'],
-    allowedChars: /^ $/,
+    allowedChars: /^[ \t]*$/,
     showDenotionChar: false,
     source: function(searchTerm, renderList, mentionChar) {
         let values = cool_values;
@@ -22,7 +22,7 @@ var mention = {
 var bindings = {
     tab: {
         key: 9,
-        handler: async function() {
+        handler: function() {
             var mention = this.quill.getModule('mention')
             mention.source = function(searchTerm, renderList, mentionChar) {
                 let values = cool_values;
@@ -33,6 +33,8 @@ var bindings = {
 
         }
     }
+
+
 }
 
 $(document).ready(() =>{
