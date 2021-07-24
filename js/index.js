@@ -8,10 +8,11 @@ var cool_values = [
     {id: 1, value: "hi"},
     {id: 2, value: "sup"}
 ]
-
+var isOpen = false;
 var mention = {
     //assumption: bell won't be generated randomly by a textbot
     mentionDenotationChars: ['\u0007'],
+    allowedChars: /^ $/,
     showDenotionChar: false,
     source: function(searchTerm, renderList, mentionChar) {
         let values = cool_values;
@@ -27,7 +28,8 @@ var bindings = {
                 let values = cool_values;
                 renderList(values, searchTerm);
             } 
-            mention.openMenu('\u0007');           
+            mention.openMenu('\u0007');  
+            isOpen = true;         
 
         }
     }
@@ -43,12 +45,12 @@ $(document).ready(() =>{
             }
         }
       });
-
+    var mench = quill.getModule("mention");
     $("#editor").keypress((e) => {
-        if (e.key !== "Enter"){
-            var newEvent = jQuery.Event("keydown");
-            newEvent.key = "Escape";
-            $("input").trigger(newEvent);
+        if (e.key === "a" && isOpen){
+            console.log("hi");
+            mench.hideMentionList();
+            isOpen = false;
         }
     
     })
