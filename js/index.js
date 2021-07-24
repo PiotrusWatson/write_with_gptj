@@ -1,7 +1,7 @@
-//import "core-js/stable";
-//import "regenerator-runtime/runtime";
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 import "quill-mention";
-const p = require('phin');
+import {generateWords} from "./endpoint.js"
 var Quill = require("quill");
 
 var cool_values = [
@@ -12,7 +12,7 @@ var isOpen = false;
 var mention = {
     //assumption: bell won't be generated randomly by a textbot
     mentionDenotationChars: ['\u0007'],
-    allowedChars: /^[ \t]*$/,
+    allowedChars: /^[\t]*$/,
     showDenotionChar: false,
     source: function(searchTerm, renderList, mentionChar) {
         let values = cool_values;
@@ -22,12 +22,17 @@ var mention = {
 var bindings = {
     tab: {
         key: 9,
-        handler: function() {
+        handler: async function() {
             var mention = this.quill.getModule('mention')
             mention.source = function(searchTerm, renderList, mentionChar) {
                 let values = cool_values;
                 renderList(values, searchTerm);
             } 
+            generateWords("hey gamers", 30, 1, 0.9)
+            .then((res) =>{
+                console.log(res.body);
+            })
+            
             mention.openMenu('\u0007');  
             isOpen = true;         
 
@@ -47,15 +52,7 @@ $(document).ready(() =>{
             }
         }
       });
-    var mench = quill.getModule("mention");
-    $("#editor").keypress((e) => {
-        if (e.key === "a" && isOpen){
-            console.log("hi");
-            mench.hideMentionList();
-            isOpen = false;
-        }
-    
-    })
+
 });
 
 
