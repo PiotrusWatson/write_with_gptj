@@ -14,9 +14,16 @@ var mention = {
     mentionDenotationChars: ['\u0007'],
     allowedChars: /^[\t]*$/,
     showDenotionChar: false,
-    source: function(searchTerm, renderList, mentionChar) {
-        let values = cool_values;
-        renderList(values, searchTerm);
+    renderLoading: function(){
+        console.log("loading");
+    },
+    source: async function(searchTerm, renderList, mentionChar) {
+        generateWords("hey gamers", 10, 1, 0.9)
+            .then((res) =>{
+                let values = res.result
+                renderList(values, searchTerm);
+            });
+        
     }
 }
 var bindings = {
@@ -24,17 +31,8 @@ var bindings = {
         key: 9,
         handler: async function() {
             var mention = this.quill.getModule('mention')
-            mention.source = function(searchTerm, renderList, mentionChar) {
-                let values = cool_values;
-                renderList(values, searchTerm);
-            } 
-            generateWords("hey gamers", 30, 1, 0.9)
-            .then((res) =>{
-                console.log(res.body);
-            })
-            
-            mention.openMenu('\u0007');  
-            isOpen = true;         
+                mention.openMenu('\u0007');  
+                isOpen = true;  
 
         }
     }
