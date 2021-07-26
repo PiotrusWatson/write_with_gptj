@@ -26,7 +26,7 @@ var bindings = {
 
 }
 
-function getText(quill, range){
+function sliceText(text, range){
     var endPoint = range.index + range.length;
     var startPoint;
     if (endPoint - MAX_PROMPT < 0){
@@ -34,7 +34,7 @@ function getText(quill, range){
     } else {
         startPoint = endPoint - MAX_PROMPT;
     }
-    return quill.getContents(startPoint);
+    return text.slice(startPoint, endPoint);
 }
 
 function parseContents(contents){
@@ -68,7 +68,8 @@ $(document).ready(() =>{
         async function(searchTerm, renderList, mentionChar) {
         var range = quill.getSelection();
         var cutoff;
-        var text = parseContents(getText(quill, range));
+        var text = parseContents(quill.getContents());
+        text = sliceText(text, range);
         console.log(text);
         if (text.charAt(text.length - 1) === "\n"){
             cutoff = 2
@@ -77,7 +78,7 @@ $(document).ready(() =>{
             cutoff = 1
         }
         var slicedText = text.slice(0, text.length - cutoff);
-        generateWords(slicedText, 10, 1, 0.9)
+        generateWords(slicedText, 5, 1, 0.9)
             .then((res) =>{
                 let values = res.result
                 renderList(values, searchTerm);
