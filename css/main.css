@@ -1,10 +1,17 @@
 html, body{
-    background-color:#D3E1EB;
+    background-color:#f8f9fa;
     margin: 0;
     height: 100%;
 }
 input.slider {
     width: 100%;
+}
+#header {
+    background-color: white;
+    margin-top: -20px;
+    padding-left: 20px;
+    padding-bottom: 20px;
+    padding-top: 20px;
 }
 
 .description {
@@ -34,7 +41,7 @@ input.box {
     padding: 2px 6px;
 }
 
-.ql-snow {
+.ql-snow{
     margin-left: 10% !important;
     margin-right: 10% !important;
     background-color: white;

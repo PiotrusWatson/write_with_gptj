@@ -1,4 +1,4 @@
-export function generateWords(sentence, length, temperature, topP){
+export function generateWords(sentence, length, temperature, topP, responseNumber){
     return new Promise((resolve, reject) => {
     $.ajax(
         {
@@ -8,7 +8,8 @@ export function generateWords(sentence, length, temperature, topP){
                 context: sentence,
                 token_max_length: length,
                 temperature: temperature,
-                top_p: topP
+                top_p: topP,
+                response_number: responseNumber
             },
         success: function(response){
             resolve(response);

@@ -25,7 +25,7 @@ def finish_text():
         "top_p": request.forms.top_p
     }
     responses = []
-    for i in range(3):
+    for i in range(int(request.forms.response_number)):
         response = requests.post("http://api.vicgalle.net:5000/generate", params=payload).json()
         responses.append({"id": i, "value": response["text"]})
     print(response)

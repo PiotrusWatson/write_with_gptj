@@ -5,6 +5,27 @@ import {generateWords} from "./endpoint.js"
 var Quill = require("quill");
 var MAX_PROMPT = 2000;
 var isLoading = false;
+class Attributes {
+    constructor(key, name, step, min, max){
+        this.key = key;
+        this.name = name;
+        this.step = step;
+        this.min = min;
+        this.max = max;
+    }
+}
+var params = {
+    topP: 0.9,
+    temperature: 1,
+    length: 5,
+    responses: 3
+}
+var attrs = [
+    new Attributes("topP", "Top P", "any", "0", "1"),
+    new Attributes("temperature", "Temperature", "any", "0", "3"),
+    new Attributes("length", "Length", "1", "1", "20"),
+    new Attributes("responses", "Response #", "1", "1", "5")
+];
 var mention = {
     //assumption: bell won't be generated randomly by a textbot
     mentionDenotationChars: ['@'],
@@ -26,6 +47,36 @@ var bindings = {
     }
 
 
+}
+
+function createInput(parent, attrs){
+    var div = $('<div>').appendTo(parent).addClass("description").append("</div>");
+    $("<span>").appendTo(div).text(attrs.name).append("</span>");
+    var box = $("<input>").appendTo(div).attr({
+        step: attrs.step,
+        min: attrs.min,
+        max: attrs.max,
+        value: params[attrs.key]
+    });
+    box.addClass("box");
+    var slider = $("<input>").appendTo(parent).attr({
+        type: "range",
+        step: attrs.step,
+        min: attrs.min,
+        max: attrs.max,
+        value: params[attrs.key]
+    });
+    slider.addClass("slider");
+    box.change(() =>{
+        var contents = box.val();
+        slider.val(contents);
+        params[attrs.key] = contents;
+    })
+    slider.change(() => {
+        var contents = slider.val();
+        box.val(contents);
+        params[attrs.key] = contents;
+    })
 }
 
 function sliceText(text, range){
@@ -57,6 +108,9 @@ function parseMention(content){
 
 $(document).ready(() =>{
     var index;
+    for (var attr of attrs){
+        createInput($(".settings"), attr);
+    }
     var quill = new Quill('#editor', {
         theme: 'snow',
         modules: {
@@ -81,12 +135,17 @@ $(document).ready(() =>{
         text = sliceText(text, range);
         console.log(text);
         //var slicedText = text.slice(0, text.length - 1);
-        generateWords(text, 5, 0.9, 0.7)
+        generateWords(text, params.length, params.temperature, params.topP, params.responses)
             .then((res) =>{
                 quill.enable();
                 let values = res.result
                 isLoading = false;
                 renderList(values, searchTerm);
+            })
+            .catch((e) =>{
+                console.log(e);
+                isLoading = false;
+                alert("oopsie woopsie :(");
             });
         
     }
