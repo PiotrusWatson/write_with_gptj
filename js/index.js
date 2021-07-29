@@ -7,25 +7,21 @@ var MAX_PROMPT = 2000;
 var isLoading = false;
 var mention = {
     //assumption: bell won't be generated randomly by a textbot
-    mentionDenotationChars: ['\u0007'],
+    mentionDenotationChars: ['@'],
     allowedChars: /^[\t]*$/,
     showDenotionChar: false,
-    spaceAfterInsert:false,
-    renderLoading: function(){
-        console.log("loading");
-        isLoading = true;
-    }
+    spaceAfterInsert:false
 }
 var bindings = {
     tab: {
         key: 9,
-        handler: async function() {
+        handler: function() {
             if (isLoading){
                 return;
             }
-            var mention = this.quill.getModule('mention')
-                mention.openMenu('\u0007');
-                this.quill.deleteText(this.quill.getLength - 2);
+            var mention = this.quill.getModule('mention');
+                mention.openMenu('@');
+                this.quill.deleteText(this.quill.getSelection().index - 1, 1);
         }
     }
 
@@ -33,7 +29,7 @@ var bindings = {
 }
 
 function sliceText(text, range){
-    var endPoint = range.index + range.length;
+    var endPoint = range.index + range.length - 1;
     var startPoint;
     if (endPoint - MAX_PROMPT < 0){
         startPoint = 0;
@@ -44,7 +40,6 @@ function sliceText(text, range){
 }
 
 function parseContents(contents){
-    console.log(contents);
     var text = ""
     for (var item of contents.ops){
         text += parseMention(item.insert);
@@ -71,6 +66,12 @@ $(document).ready(() =>{
             }
         }
       });
+
+    quill.getModule('mention').options.renderLoading = function(){
+        console.log("loading");
+        quill.disable();
+        isLoading = true;
+    }
     quill.getModule('mention').options.source = 
         async function(searchTerm, renderList, mentionChar) {
         var range = quill.getSelection();
@@ -79,9 +80,10 @@ $(document).ready(() =>{
         var text = parseContents(quill.getContents());
         text = sliceText(text, range);
         console.log(text);
-        var slicedText = text.slice(0, text.length - 1);
-        generateWords(slicedText, 5, 1, 0.9)
+        //var slicedText = text.slice(0, text.length - 1);
+        generateWords(text, 5, 0.9, 0.7)
             .then((res) =>{
+                quill.enable();
                 let values = res.result
                 isLoading = false;
                 renderList(values, searchTerm);
@@ -92,7 +94,7 @@ $(document).ready(() =>{
     quill.getModule('mention').options.onSelect = function(item, insertItem){
         console.log("THERE IS THE ITEM");
         console.log(item);
-        quill.insertText(index, item.value);
+        quill.insertText(index-1, item.value);
     }
 
 });

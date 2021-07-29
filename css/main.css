@@ -1,7 +1,37 @@
-html, body {
+html, body{
     background-color:#D3E1EB;
     margin: 0;
     height: 100%;
+}
+input.slider {
+    width: 100%;
+}
+
+.description {
+    position: relative;
+    margin-bottom: 5px;
+}
+
+.description span{
+    line-height: 20px;
+}   
+
+input.box {
+    width: 25%;
+    right: 0%;
+    position: absolute;
+    top:0%;
+    line-height: 20px;
+}
+.loading {
+    pointer-events:none
+}
+.settings{
+    background-color: #ececec;
+    position: fixed;
+    bottom: 0;
+    width: 140px;
+    padding: 2px 6px;
 }
 
 .ql-snow {
