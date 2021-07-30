@@ -33,6 +33,12 @@ input.box {
 .loading {
     pointer-events:none
 }
+.fa-circle-notch {
+    position: absolute;
+    font-size: 1em;
+    z-index: 9999;
+    margin-left: 4px;
+}
 .settings{
     background-color: #ececec;
     position: fixed;

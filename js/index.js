@@ -5,6 +5,8 @@ import {generateWords} from "./endpoint.js"
 var Quill = require("quill");
 var MAX_PROMPT = 2000;
 var isLoading = false;
+var lastPoint;
+
 class Attributes {
     constructor(key, name, step, min, max){
         this.key = key;
@@ -41,6 +43,8 @@ var bindings = {
                 return;
             }
             var mention = this.quill.getModule('mention');
+                lastPoint = this.quill.getSelection();
+                lastPoint = this.quill.getBounds(lastPoint.index, lastPoint.length);
                 mention.openMenu('@');
                 this.quill.deleteText(this.quill.getSelection().index - 1, 1);
         }
@@ -107,6 +111,7 @@ function parseMention(content){
 }
 
 $(document).ready(() =>{
+    var loadingSpinner = $(".fa-circle-notch");
     var index;
     for (var attr of attrs){
         createInput($(".settings"), attr);
@@ -123,6 +128,13 @@ $(document).ready(() =>{
 
     quill.getModule('mention').options.renderLoading = function(){
         console.log("loading");
+        loadingSpinner.appendTo($("#editor"));
+        loadingSpinner.css({
+            "left": lastPoint.left,
+            "top": lastPoint.top,
+        });
+        loadingSpinner.removeClass("invisible");
+        
         quill.disable();
         isLoading = true;
     }
@@ -140,19 +152,19 @@ $(document).ready(() =>{
                 quill.enable();
                 let values = res.result
                 isLoading = false;
+                loadingSpinner.addClass("invisible");
                 renderList(values, searchTerm);
             })
             .catch((e) =>{
                 console.log(e);
                 isLoading = false;
+                loadingSpinner.addClass("invisible");
                 alert("oopsie woopsie :(");
             });
         
     }
 
     quill.getModule('mention').options.onSelect = function(item, insertItem){
-        console.log("THERE IS THE ITEM");
-        console.log(item);
         quill.insertText(index-1, item.value);
     }
 
