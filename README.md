@@ -3,6 +3,8 @@ A quick n dirty hack remake of https://transformer.huggingface.co/ but using GPT
 
 Using https://github.com/vicgalle/gpt-j-api to make gpt-j happen.
 
+Hosted here: http://piotrus-watson.alwaysdata.net/
+
 Requires:
   * Python 3 (with pip)
   * npm
