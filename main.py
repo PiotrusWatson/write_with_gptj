@@ -27,7 +27,9 @@ def finish_text():
     responses = []
     for i in range(int(request.forms.response_number)):
         response = requests.post("http://api.vicgalle.net:5000/generate", params=payload).json()
-        fixed_text = ftfy.fix_text(response["text"])
+        fixed_text = response["text"]
+        if ftfy.is_bad(fixed_text):
+            fixed_text = ftfy.fix_text(response["text"])
         responses.append({"id": i, "value": fixed_text})
     print(response)
     return {"result": responses}
