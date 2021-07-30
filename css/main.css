@@ -2,6 +2,7 @@ html, body{
     background-color:#f8f9fa;
     margin: 0;
     height: 100%;
+    font-family: 'Roboto', sans-serif;
 }
 input.slider {
     width: 100%;
@@ -10,7 +11,8 @@ input.slider {
     background-color: white;
     margin-top: -20px;
     padding-left: 20px;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
+    margin-bottom: 2px;
     padding-top: 20px;
 }
 
