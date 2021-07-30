@@ -1,7 +1,7 @@
 from bottle import get, static_file, route, run, request, default_app
 import config
 import requests
-
+import ftfy
 # Static Routes
 @get("/css/<filepath:re:.*\.css>")
 def css(filepath):
@@ -27,7 +27,8 @@ def finish_text():
     responses = []
     for i in range(int(request.forms.response_number)):
         response = requests.post("http://api.vicgalle.net:5000/generate", params=payload).json()
-        responses.append({"id": i, "value": response["text"]})
+        fixed_text = ftfy.fix_text(response["text"])
+        responses.append({"id": i, "value": fixed_text})
     print(response)
     return {"result": responses}
 
