@@ -149,7 +149,6 @@ $(document).ready(() =>{
             .then((res) =>{
                 quill.enable();
                 let values = res.result
-                console.log(values);
                 isLoading = false;
                 loadingSpinner.addClass("invisible");
                 renderList(values, searchTerm);
