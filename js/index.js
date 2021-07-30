@@ -127,7 +127,6 @@ $(document).ready(() =>{
       });
 
     quill.getModule('mention').options.renderLoading = function(){
-        console.log("loading");
         loadingSpinner.appendTo($("#editor"));
         loadingSpinner.css({
             "left": lastPoint.left,
@@ -145,7 +144,6 @@ $(document).ready(() =>{
         var cutoff;
         var text = parseContents(quill.getContents());
         text = sliceText(text, range);
-        console.log(text);
         //var slicedText = text.slice(0, text.length - 1);
         generateWords(text, params.length, params.temperature, params.topP, params.responses)
             .then((res) =>{
