@@ -1,4 +1,4 @@
-from bottle import get, static_file, route, run, request
+from bottle import get, static_file, route, run, request, default_app
 import config
 import requests
 
@@ -31,4 +31,7 @@ def finish_text():
     print(response)
     return {"result": responses}
 
-run(host=config.host, port=config.port, reloader=True)
+if (config.isLocal):
+    run(host=config.host, port=config.port, reloader=True)
+else:
+    application = default_app()
