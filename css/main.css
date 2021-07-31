@@ -7,6 +7,12 @@ html, body{
 input.slider {
     width: 100%;
 }
+#header span {
+    margin-left: 15px;
+}
+#autocomplete{
+    color:#3B48F6;
+}
 #header {
     background-color: white;
     margin-top: -20px;
