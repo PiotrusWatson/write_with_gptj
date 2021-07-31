@@ -6,6 +6,7 @@ var Quill = require("quill");
 var MAX_PROMPT = 2000;
 var isLoading = false;
 var lastPoint;
+var oldPoint = {index: 0, length: 0};
 
 class Attributes {
     constructor(key, name, step, min, max){
@@ -35,21 +36,25 @@ var mention = {
     showDenotionChar: false,
     spaceAfterInsert:false
 }
+
+function triggerAutocomplete() {
+    if (isLoading){
+        return;
+    }
+    var mention = this.quill.getModule('mention');
+        lastPoint = this.quill.getSelection();
+        lastPoint = this.quill.getBounds(lastPoint.index, lastPoint.length);
+        mention.openMenu('@');
+        this.quill.deleteText(this.quill.getSelection().index - 1, 1);
+}
+
+
+
 var bindings = {
     tab: {
         key: 9,
-        handler: function() {
-            if (isLoading){
-                return;
-            }
-            var mention = this.quill.getModule('mention');
-                lastPoint = this.quill.getSelection();
-                lastPoint = this.quill.getBounds(lastPoint.index, lastPoint.length);
-                mention.openMenu('@');
-                this.quill.deleteText(this.quill.getSelection().index - 1, 1);
-        }
+        handler: triggerAutocomplete
     }
-
 
 }
 
@@ -110,6 +115,8 @@ function parseMention(content){
     
 }
 
+
+
 $(document).ready(() =>{
     var loadingSpinner = $(".fa-circle-notch");
     var index;
@@ -125,6 +132,24 @@ $(document).ready(() =>{
             }
         }
       });
+
+    function autocompleteOnClick() {
+        if (isLoading){
+            return;
+        }
+        var mention = quill.getModule('mention');
+        lastPoint = oldPoint;
+        lastPoint = quill.getBounds(lastPoint.index, lastPoint.length);
+        mention.openMenu('@');
+        quill.deleteText(quill.getSelection().index - 1, 1);
+
+    }
+    $("#editor").blur(() =>{
+        oldPoint = quill.getSelection();
+    })
+    $("#autocomplete").click(() =>{
+        autocompleteOnClick();
+    });
 
     quill.getModule('mention').options.renderLoading = function(){
         loadingSpinner.appendTo($("#editor"));
