@@ -1,7 +1,6 @@
 from bottle import get, static_file, route, run, request, default_app
 import config
 import requests
-import ftfy
 # Static Routes
 @get("/css/<filepath:re:.*\.css>")
 def css(filepath):
