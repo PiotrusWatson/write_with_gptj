@@ -80,8 +80,8 @@ function createInput(parent, attrs){
         var contents = box.val();
         slider.val(contents);
         params[attrs.key] = contents;
-    })
-    slider.change(() => {
+    });
+    slider.on('input change', () =>{
         var contents = slider.val();
         box.val(contents);
         params[attrs.key] = contents;
