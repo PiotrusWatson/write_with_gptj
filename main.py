@@ -26,12 +26,12 @@ def finish_text():
     }
     responses = []
     for i in range(int(request.forms.response_number)):
-        response = requests.post("http://api.vicgalle.net:5000/generate", params=payload).json()
+        response = requests.post("http://api.vicgalle.net:5000/generate", params=payload)
+        response = response.json()
         fixed_text = response["text"]
-        if ftfy.is_bad(fixed_text):
-            fixed_text = ftfy.fix_text(response["text"])
+        if fixed_text[-1] == "�":
+            fixed_text = fixed_text[:-1]
         responses.append({"id": i, "value": fixed_text})
-    print(response)
     return {"result": responses}
 
 if (config.isLocal):

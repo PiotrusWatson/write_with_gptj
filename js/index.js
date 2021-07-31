@@ -158,6 +158,7 @@ $(document).ready(() =>{
                 isLoading = false;
                 loadingSpinner.addClass("invisible");
                 alert("oopsie woopsie :(");
+                quill.enable()
             });
         
     }
